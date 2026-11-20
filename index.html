@@ -1,0 +1,36 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GTU Maths 2 auxiliary equation: complementary function y_c from the roots, including repeats and complex pairs</title>
+<meta name="description" content="GTU Hero&#x27;s Maths 2 guide lists higher-order differential equations, and the complementary function of a linear equation with constant coefficients, am">
+<style>body{font-family:system-ui,sans-serif;max-width:720px;margin:2rem auto;padding:0 1rem;line-height:1.5}input,textarea,select{margin:.3rem 0;padding:.3rem;width:min(100%,360px);box-sizing:border-box}textarea{width:min(100%,520px);min-height:5rem;font-family:ui-monospace,monospace}#out{font-weight:bold;margin-top:1rem;white-space:pre-wrap;font-family:ui-monospace,monospace}#plot{margin-top:1rem}svg{max-width:100%;height:auto;border:1px solid #ccc;background:#fff}</style></head><body>
+<h1>GTU Maths 2 auxiliary equation: complementary function y_c from the roots, including repeats and complex pairs</h1>
+<p>GTU Hero&#x27;s Maths 2 guide lists higher-order differential equations, and the complementary function of a linear equation with constant coefficients, among the ODE methods to practise for BE Mathematics 2 (BE02000011 and other codes where they are prescribed). Coefficients daalo: this page solves the auxiliary equation up to order 4 and writes y_c for distinct real roots, repeated roots and complex pairs. Practice equations are my own, not from a GTU paper. Pehle roots classify karo, phir CF likhna.</p>
+<h2>Tool</h2>
+<label>Coefficients of a_n y^(n) + ... + a_1 y' + a_0 y = 0, highest power first (spaces or commas)<br>
+<input id="coef" value="1 -5 6"></label><br>
+<p>Default is y'' - 5y' + 6y = 0, with y_c = c1 e^(2x) + c2 e^(3x).</p>
+<button type="button" onclick="go()">Show</button>
+<div id="out"></div>
+<div id="plot"></div>
+<h2>Facts used</h2>
+<ul><li>For a linear ODE with constant coefficients, the complementary function y_c comes from the roots of the auxiliary (characteristic) equation a_n m^n + ... + a_0 = 0.</li><li>Distinct real roots m1, m2, ... give c1 e^(m1 x) + c2 e^(m2 x) + ...</li><li>A real root repeated k times gives (c1 + c2 x + ... + ck x^(k-1)) e^(m x).</li><li>A complex pair alpha +- i beta gives e^(alpha x) [c1 cos(beta x) + c2 sin(beta x)]. If that pair is itself repeated, the same polynomials in x multiply the sine and cosine.</li><li>Default practice: y&#x27;&#x27; - 5y&#x27; + 6y = 0 has roots 2 and 3, so y_c = c1 e^(2x) + c2 e^(3x). The test file also checks a repeated root, a pure oscillation, a complex pair with a real part, and a repeated complex pair.</li><li>These are practice methods from the guide, not a promise that the same equation will appear. Confirm higher-order linear equations are in your own Maths 2 code.</li></ul>
+<h2>Galti mat karna</h2>
+<ul><li>Write the auxiliary equation and the classified roots before you write y_c. The CF line alone is not the full method.</li><li>If the right-hand side is not zero, y_c is only the complementary part. You still need a particular integral (undetermined coefficients or variation of parameters, where prescribed).</li><li>A repeated root needs the extra x, x^2, ... factors. Forgetting them is the usual slip.</li><li>Keep exact fractions when a root is 1/2 or similar. This page snaps simple fractions; show the exact algebra in the exam.</li></ul>
+<p>Which Maths 2 topics to practise and how to spot repeated question types: <a href="https://gtuhero.com/blogs/gtu-maths-2-papers-pyqs-repeated-sums">GTU Hero</a> (GTU Hero is my project).</p>
+<script src="tool.js"></script>
+<script>
+function go(){
+let out;
+  const plot = document.getElementById('plot');
+  plot.innerHTML = '';
+  try {
+    const coef = document.getElementById('coef').value.trim().split(/[\s,]+/).filter(Boolean).map(Number);
+    if (!coef.length || coef.some(x => !Number.isFinite(x))) throw new Error('Enter numeric coefficients, highest power first');
+    const r = AUX.cf(coef);
+    const roots = r.roots.map(r.show).join(', ');
+    out = 'Auxiliary equation roots: ' + roots + '\nKinds: ' + r.kinds.join('; ') + '\n' + r.cf;
+  } catch (e) { out = 'Check your input: ' + e.message; }
+  document.getElementById('out').textContent = out;
+}
+go();
+
+</script>
+</body></html>
